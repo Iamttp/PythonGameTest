@@ -20,3 +20,5 @@ mainCocos.py
     > 1.0   显示基本Hello World窗口
 
     > 1.1   cocos2d action使用
+
+    > 1.2   cocos2d event_handler使用

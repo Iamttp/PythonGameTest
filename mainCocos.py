@@ -1,42 +1,32 @@
 import cocos
+import pyglet
 from cocos.actions import *
 
-# Subclass(子类) a Layer and define the logic of you program here:
-class HelloWorld(cocos.layer.Layer):
+class KeyDisplay(cocos.layer.Layer):
+    is_event_handler = True
     def __init__(self):
-        super(HelloWorld,self).__init__()
-        
-        label = cocos.text.Label(
-            "Hello world" ,
-            font_size=32 ,
-            anchor_x='center' ,
-            anchor_y='center'
-        )
-        label.position = 320, 240
-        self.add(label, z=1)
+        super(KeyDisplay,self).__init__()
+        self.text = cocos.text.Label("",x=100,y=100)
+        self.keys_pressed = set()
+        self.update_text()
+        self.add(self.text)
 
-        sprite = cocos.sprite.Sprite("timg.jpeg")
-        sprite.position = 0,0
-        # This means that our sprite will be 3 times bigger. 
-        # The default scale attribute is 1:
-        # scale 缩放
-        sprite.scale = 1
-        # but on top of the label by setting the z-value to 1, 
-        # since the default z-value is 0:
-        self.add(sprite, z=0)
-        
-        scale = ScaleBy(3, duration=2)
-        label.do(Repeat(scale + Reverse(scale)))
+    def update_text(self):
+        key_names = [pyglet.window.key.symbol_string (k) for k in self.keys_pressed]
+        text = "Keys: "+ ",".join(key_names)
+        self.text.element.text= text
 
+    def on_key_press(self,key,modifiers):
+        self.keys_pressed.add(key)
+        self.update_text()
+    
+    def on_key_release(self,key,modifiers):
+        self.keys_pressed.remove(key)
+        self.update_text()
 
 # After defining the HelloWorld class,
 # we need to initialize and create a window. 
 # To do this, we initialize the Director(主管):
-cocos.director.director.init()
-# 实例化
-hello_layer = HelloWorld()
-
-#hello_layer.do(RotateBy(360,duration=10))
-main_scene = cocos.scene.Scene(hello_layer)
-
-cocos.director.director.run(main_scene)
+cocos.director.director.init(resizable=True)
+#cocos.director.director.run(main_scene)
+cocos.director.director.run(cocos.scene.Scene(KeyDisplay()))
