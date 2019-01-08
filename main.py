@@ -1,53 +1,53 @@
-import pygame                   # 导入pygame库
-from pygame.locals import *     # 导入pygame库中的一些常量
-from sys import exit            # 导入sys库中的exit函数
+# -*- coding = utf-8 -*-
 
-# 定义窗口的分辨率
+import pygame
+from pygame.locals import *
+from sys import exit
+from random import randint
+
 SCREEN_WIDTH = 480
 SCREEN_HEIGHT = 640
 
-# 计数ticks == new add ==
-ticks = 0
-# 计数ticks == new add ==
-  
-# 初始化游戏
-pygame.init()                   # 初始化pygame
-screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])     # 初始化窗口
-pygame.display.set_caption('This is my first pygame-program')       # 设置窗口标题
+# Player类 -- 继承自pygame.sprite.Sprite
+class Player(pygame.sprite.Sprite):
+    def __init__(self, initial_position):
+        pygame.sprite.Sprite.__init__(self)     #※ 父构造函数
+        self.image = pygame.Surface([10, 10])   #※ 精灵图片Surface
+        self.image.fill((0, 0, 0))
+        self.rect = self.image.get_rect()       #※ 精灵图片的大小
+        self.rect.topleft = initial_position    #※ 精灵图片的位置
 
-# 载入背景图
-background = pygame.image.load('resources/image/background.png')
+        self.speed = 6
+    
+    def update(self):
+        self.rect.left += self.speed
+        if self.rect.left > SCREEN_WIDTH:            
+            self.kill()
 
-# 载入资源图片 == new add ==
-shoot_img = pygame.image.load('resources/image/shoot.png')
-# 用subsurface剪切读入的图片
-hero1_rect = pygame.Rect(0, 99, 102, 126)
-hero2_rect = pygame.Rect(165, 360, 102, 126)
-hero1 = shoot_img.subsurface(hero1_rect)
-hero2 = shoot_img.subsurface(hero2_rect)
-hero_pos = [200, 500]
-# 载入资源图片 == new add ==
+pygame.init()
+clock = pygame.time.Clock()
+screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 
-# 事件循环(main loop)
+# 建立精灵组
+group = pygame.sprite.Group()
+
 while True:
-
-    # 绘制背景
-    screen.blit(background, (0, 0))
+    clock.tick(10)
+    print(len(group.sprites()))
     
-    # 绘制飞机 == new add ==
-    if ticks % 50 < 25:
-        screen.blit(hero1, hero_pos)
-    else:
-        screen.blit(hero2, hero_pos)
-    ticks += 1
-    # 绘制飞机  == new add ==
-    
-    # 更新屏幕
-    pygame.display.update()                                         
-    
-    # 处理游戏退出
-    # 从消息队列中循环取
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type == QUIT:
             pygame.quit()
             exit()
+
+    # 绘制背景
+    screen.fill((255,255,255))
+
+    # 不断往精灵组中添加精灵
+    group.add(Player((randint(0, SCREEN_WIDTH), randint(0, SCREEN_HEIGHT))))
+    
+    # 将每个精灵更新后显示在Screen上
+    group.update()
+    group.draw(screen)
+    
+    pygame.display.update()
