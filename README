@@ -11,5 +11,12 @@ mainPygame.py
     > 1.4   精灵碰撞
 
 mainCocos.py
+    render 提供
+    execute 执行
+
+    http://python.cocos2d.org/doc/programming_guide/quickstart.html#hello-world
+
     这是ubuntu vscode python编写的Concos2d程序
     > 1.0   显示基本Hello World窗口
+
+    > 1.1   cocos2d action使用
