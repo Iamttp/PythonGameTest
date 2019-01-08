@@ -1,11 +1,15 @@
-这是ubuntu vscode python编写的pygame程序
+mainPygame.py
+    这是ubuntu vscode python编写的pygame程序
+    > 1.0   显示基本窗口
 
-> 1.0   显示基本窗口
+    > 1.1   添加背景
 
-> 1.1   添加背景
+    > 1.2   使用精灵
 
-> 1.2   使用精灵
+    > 1.3   飞机使用精灵
 
-> 1.3   飞机使用精灵
+    > 1.4   精灵碰撞
 
-> 1.4   精灵碰撞
+mainCocos.py
+    这是ubuntu vscode python编写的Concos2d程序
+    > 1.0   显示基本Hello World窗口
